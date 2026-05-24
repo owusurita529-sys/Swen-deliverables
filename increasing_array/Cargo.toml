@@ -1,0 +1,21 @@
+[package]
+name = "array_lifter"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "array_lifter"
+path = "src/main.rs"
+
+[lib]
+name = "array_lifter"
+path = "src/lib.rs"
+
+[dependencies]
+
+[[bench]]
+name = "speed_race"
+harness = false
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
