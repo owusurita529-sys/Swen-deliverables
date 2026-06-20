@@ -1,12 +1,6 @@
-// -------------------------------------------------------
-// main.rs
-// Student: [RITA OWUSU]
-// Room Allocation — CSES compatible, self-contained
-// -------------------------------------------------------
-
 use std::collections::BinaryHeap;
 use std::cmp::Reverse;
-use std::io::{self, BufRead};
+use std::io::{self, BufRead, Write, BufWriter};
 
 fn checkout_queue(bookings: &[(i64, i64)]) -> (usize, Vec<usize>) {
     let mut guest_list: Vec<(i64, i64, usize)> = bookings
@@ -25,7 +19,7 @@ fn checkout_queue(bookings: &[(i64, i64)]) -> (usize, Vec<usize>) {
         let assigned = if let Some(&Reverse((earliest, room))) =
             checkout_heap.peek()
         {
-            if earliest <= checkin {
+            if earliest < checkin {
                 checkout_heap.pop();
                 room
             } else {
@@ -48,6 +42,8 @@ fn checkout_queue(bookings: &[(i64, i64)]) -> (usize, Vec<usize>) {
 
 fn main() {
     let stdin = io::stdin();
+    let stdout = io::stdout();
+    let mut out = BufWriter::new(stdout.lock());
     let mut lines = stdin.lock().lines();
 
     let n: usize = lines
@@ -67,8 +63,11 @@ fn main() {
 
     let (rooms_needed, room_log) = checkout_queue(&bookings);
 
-    println!("{}", rooms_needed);
-    for room in &room_log {
-        println!("{}", room);
-    }
+    writeln!(out, "{}", rooms_needed).unwrap();
+
+    let result: Vec<String> = room_log
+        .iter()
+        .map(|x| x.to_string())
+        .collect();
+    writeln!(out, "{}", result.join(" ")).unwrap();
 }
